@@ -159,9 +159,11 @@ public final class LookBehavior extends Behavior implements ILookBehavior {
     }
 
     public Optional<Rotation> getEffectiveRotation() {
+        /*
         if (Baritone.settings().freeLook.value) {
             return Optional.ofNullable(this.serverRotation);
         }
+        */
         // If freeLook isn't on, just defer to the player's actual rotations
         return Optional.empty();
     }
