@@ -169,9 +169,6 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
     }
 
     @Override
-    public Map<BlockState, Integer> getMissing() { return this.missing; }
-
-    @Override
     public void build(String name, ISchematic schematic, Vec3i origin) {
         //Shouldn't get initially called
         if (this.fromAltoclef && this.stateStack.isEmpty()) {
@@ -939,7 +936,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
         List<BetterBlockPos> breakable = new ArrayList<>();
         List<BetterBlockPos> sourceLiquids = new ArrayList<>();
         List<BetterBlockPos> flowingLiquids = new ArrayList<>();
-        //Map<BlockState, Integer> missing = new HashMap<>();
+        Map<BlockState, Integer> missing = new HashMap<>();
         incorrectPositions.forEach(pos -> {
             BlockState state = bcc.bsi.get0(pos);
             if (state.getBlock() instanceof AirBlock) {

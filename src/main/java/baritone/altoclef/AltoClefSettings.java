@@ -17,7 +17,9 @@
 
 package baritone.altoclef;
 
+import baritone.api.Settings;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,6 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
@@ -45,6 +48,7 @@ public class AltoClefSettings {
     private final List<BiPredicate<BlockState, ItemStack>> _forceUseTool = new ArrayList<>();
     private final List<BiFunction<Double, BlockPos, Double>> _globalHeuristics = new ArrayList<>();
     private final HashSet<Item> _protectedItems = new HashSet<>();
+    private Optional<Predicate<Entity>> shouldAvoidPredicate = Optional.empty();
     private boolean _allowFlowingWaterPass;
     private boolean _pauseInteractions;
     private boolean _dontPlaceBucketButStillFall;
@@ -88,6 +92,17 @@ public class AltoClefSettings {
         synchronized (placeMutex) {
             _placeAvoiders.add(avoider);
         }
+    }
+
+    /**
+     * Predicate to decide whether to avoid a mob or not, if not present then will avoid all mobs.
+     */
+    public final void setShouldAvoidPredicate(Optional<Predicate<Entity>> predicateOptional) {
+        shouldAvoidPredicate = predicateOptional;
+    }
+
+    public final Optional<Predicate<Entity>> ShouldAvoidPredicate() {
+        return shouldAvoidPredicate;
     }
 
     public boolean shouldAvoidBreaking(int x, int y, int z) {

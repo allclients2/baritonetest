@@ -18,17 +18,24 @@
 package baritone.utils.pathing;
 
 import baritone.Baritone;
+import baritone.altoclef.AltoClefSettings;
 import baritone.api.utils.BetterBlockPos;
 import baritone.api.utils.IPlayerContext;
 import it.unimi.dsi.fastutil.longs.Long2DoubleOpenHashMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
+
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.monster.ZombifiedPiglin;
+
+import javax.sound.midi.SysexMessage;
 
 public class Avoidance {
 
@@ -76,7 +83,14 @@ public class Avoidance {
                     .filter(entity -> (!(entity instanceof Spider)) || ctx.player().getLightLevelDependentMagicValue() < 0.5)
                     .filter(entity -> !(entity instanceof ZombifiedPiglin) || ((ZombifiedPiglin) entity).getLastHurtByMob() != null)
                     .filter(entity -> !(entity instanceof EnderMan) || ((EnderMan) entity).isCreepy())
-                    .forEach(entity -> res.add(new Avoidance(entity.blockPosition(), mobCoeff, Baritone.settings().mobAvoidanceRadius.value)));
+                    .forEach(
+                        entity -> {
+                            Optional<Predicate<Entity>> shouldAvoidPredicate = AltoClefSettings.getInstance().ShouldAvoidPredicate();
+                            if (shouldAvoidPredicate.isEmpty() || shouldAvoidPredicate.get().test(entity)) {
+                                res.add(new Avoidance(entity.blockPosition(), mobCoeff, Baritone.settings().mobAvoidanceRadius.value));
+                            }
+                        }
+                    );
         }
         return res;
     }

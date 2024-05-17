@@ -18,6 +18,7 @@
 package baritone.api.process;
 
 import baritone.api.schematic.ISchematic;
+import baritone.api.utils.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
@@ -33,7 +34,6 @@ import java.util.Map;
  * @since 1/15/2019
  */
 public interface IBuilderProcess extends IBaritoneProcess {
-
     /**
      * Requests a build for the specified schematic, labeled as specified, with the specified origin.
      *
@@ -65,7 +65,13 @@ public interface IBuilderProcess extends IBaritoneProcess {
 
     void pause();
 
+
+    /*
+    // For Altoclef, makes it look cleaner (for me, but really just too lazy to remove)
     Map<BlockState, Integer> getMissing();
+
+    Pair<ISchematic, BlockPos> getSchemAndOrigin();
+     */
 
     boolean isPaused();
 
