@@ -86,6 +86,7 @@ public class Avoidance {
                     .forEach(
                         entity -> {
                             Optional<Predicate<Entity>> shouldAvoidPredicate = AltoClefSettings.getInstance().ShouldAvoidPredicate();
+                            //System.out.println("Should avoid predicate is present: " + shouldAvoidPredicate.isPresent());
                             if (shouldAvoidPredicate.isEmpty() || shouldAvoidPredicate.get().test(entity)) {
                                 res.add(new Avoidance(entity.blockPosition(), mobCoeff, Baritone.settings().mobAvoidanceRadius.value));
                             }

@@ -31,10 +31,8 @@ import baritone.api.schematic.ISchematic;
 import baritone.api.schematic.IStaticSchematic;
 import baritone.api.schematic.SubstituteSchematic;
 import baritone.api.schematic.format.ISchematicFormat;
-import baritone.api.utils.BetterBlockPos;
-import baritone.api.utils.RayTraceUtils;
+import baritone.api.utils.*;
 import baritone.api.utils.Rotation;
-import baritone.api.utils.RotationUtils;
 import baritone.api.utils.input.Input;
 import baritone.pathing.movement.CalculationContext;
 import baritone.pathing.movement.Movement;
@@ -239,6 +237,21 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
             });
         }
     }
+
+    private Map<BlockState, Integer> lastMissing = missing;
+
+    public Map<BlockState, Integer> getMissing() {
+        return lastMissing;
+    }
+
+    public String getBuildName() {
+        return name;
+    }
+
+    public Pair<ISchematic, Vec3i> getSchemAndOrigin() {
+        return new Pair<>(schematic, origin);
+    }
+
 
     @Override
     public void popStack() {
@@ -708,6 +721,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
                 if (Baritone.settings().notificationOnBuildFinished.value) {
                     logNotification("Done building", false);
                 }
+                lastMissing.clear();
                 if (this.fromAltoclef) {
                     this.fromAltoclefFinished = true;
                 }
@@ -984,6 +998,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
             if (!missing.isEmpty()) {
                 protectItemOfMissing();
             }
+            lastMissing = missing;
             if (logMissing && !missing.isEmpty()) {
                 logDirect("Missing materials for at least:");
                 logDirect(missing.entrySet().stream()
