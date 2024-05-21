@@ -721,7 +721,9 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
                 if (Baritone.settings().notificationOnBuildFinished.value) {
                     logNotification("Done building", false);
                 }
-                lastMissing.clear();
+                if (lastMissing != null) {
+                    lastMissing.clear();
+                }
                 if (this.fromAltoclef) {
                     this.fromAltoclefFinished = true;
                 }
