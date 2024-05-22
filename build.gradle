@@ -158,7 +158,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-            groupId = 'com.example' // Replace with your group ID
+            groupId = 'allclients2' // Replace with your group ID
             artifactId = 'baritone-unoptimized-fabric' // Replace with your artifact ID
             version = '1.20.4-alpha-0.1' // Replace with your version
         }
