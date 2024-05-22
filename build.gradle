@@ -154,23 +154,27 @@ javadoc {
     classpath += sourceSets.api.compileClasspath
 }
 
-if (gradle.taskGraph.hasTask(":publish")) {
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                from components.java
-                groupId = 'allclients2' // Replace with your group ID
-                artifactId = 'baritone-unoptimized-fabric' // Replace with your artifact ID
-                version = '1.20.4-alpha-0.1' // Replace with your version
+tasks.register('publishAltoclef') {
+    group = 'custom'
+    description = 'publishes the Altoclef Baritone to GitHub Packages'
+    doLast {
+        publishing {
+            publications {
+                mavenJava(MavenPublication) {
+                    from components.java
+                    groupId = 'allclients2' // Replace with your group ID
+                    artifactId = 'baritone-unoptimized-fabric' // Replace with your artifact ID
+                    version = '1.20.4-alpha-0.1' // Replace with your version
+                }
             }
-        }
-        repositories {
-            maven {
-                name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/allclients2/altoclefprivate")
-                credentials {
-                    username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-                    password = project.findProperty("gpr.token") ?: System.getenv("BARITONE_GITHUB_TOKEN")
+            repositories {
+                maven {
+                    name = "GitHubPackages"
+                    url = uri("https://maven.pkg.github.com/allclients2/altoclefprivate")
+                    credentials {
+                        username = project.findProperty("gpr.user") ?: System.getenv("USERNAME") ?: "allclients2"
+                        password = project.findProperty("gpr.token") ?: System.getenv("BARITONE_GITHUB_TOKEN")
+                    }
                 }
             }
         }
