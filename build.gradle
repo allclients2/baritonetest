@@ -153,3 +153,24 @@ javadoc {
     source = sourceSets.api.allJava
     classpath += sourceSets.api.compileClasspath
 }
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            groupId = 'com.example' // Replace with your group ID
+            artifactId = 'baritone-unoptimized-fabric' // Replace with your artifact ID
+            version = '1.20.4-alpha-0.1' // Replace with your version
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/allclients2/altoclefprivate")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.token") ?: System.getenv("BARITONE_GITHUB_TOKEN")
+            }
+        }
+    }
+}
